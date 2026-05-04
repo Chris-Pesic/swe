@@ -1,28 +1,22 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet-postgres
 {
-    "name": "C# (.NET) and PostgreSQL",
-    "dockerComposeFile": "docker-compose.yml",
+    "name": "MAUI Dev Environment",
+    "dockerComposeFile": ["../docker-compose.yml"],
     "service": "app",
-    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}"
-
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
-
-	// Configure tool-specific properties.
-	// "customizations": {},
-
-	// Use 'forwardPorts' to make a list of ports inside the container available locally.
-	// "forwardPorts": [5000, 5001, 5432],
-	// "portsAttributes": {
-	//		"5001": {
-	//			"protocol": "https"
-	//		}
-	// }
-
-    // Use 'postCreateCommand' to run commands after the container is created.
-    // "postCreateCommand": "dotnet --info",
-
-	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+    "workspaceFolder": "/workspace",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "cweijan.vscode-postgresql-client2",
+                "ms-dotnettools.dotnet-maui",
+                "toroxx.vscode-avdmanager"
+            ]
+        }
+    },
+    "remoteUser": "root",
+    "portsAttributes": {
+        "5037": { "onAutoForward": "ignore" },
+        "5554": { "onAutoForward": "silent" },
+        "5555": { "onAutoForward": "silent" }
+    }
 }
+

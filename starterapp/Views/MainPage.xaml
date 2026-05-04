@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="StarterApp.Views.MainPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:StarterApp.ViewModels"
+             Title="{Binding Title}">
+
+    <ContentPage.BindingContext>
+        <vm:MainViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Profile" Command="{Binding NavigateToProfileCommand}" IconImageSource="user.png" />
+        <ToolbarItem Text="Settings" Command="{Binding NavigateToSettingsCommand}" IconImageSource="settings.png" />
+        <ToolbarItem Text="Logout" Command="{Binding LogoutCommand}" IconImageSource="logout.png" />
+    </ContentPage.ToolbarItems>
+
+    <RefreshView IsRefreshing="{Binding IsBusy}" Command="{Binding RefreshDataCommand}">
+        <ScrollView>
+            <Grid Padding="20" RowSpacing="20">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" /> <!-- NEW FORM -->
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <!-- Existing content unchanged above -->
+
+                <!-- Header -->
+                <Grid Grid.Row="2" ColumnDefinitions="*,Auto" Margin="0,10,0,10">
+                    <Label Text="Available Items"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" />
+
+                    <Button Grid.Column="1"
+                            Text="+ Add"
+                            Command="{Binding ToggleAddFormCommand}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            CornerRadius="8"
+                            Padding="12,6" />
+                </Grid>
+
+                <!-- ✅ NEW: Add Listing Form -->
+                <Border Grid.Row="3"
+                        IsVisible="{Binding IsAddingItem}"
+                        Padding="15"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+                    
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+
+                    <StackLayout Spacing="10">
+
+                        <Label Text="Add New Listing"
+                               FontSize="18"
+                               FontAttributes="Bold" />
+
+                        <Entry Placeholder="Item Name"
+                               Text="{Binding NewItemName}" />
+
+                        <Editor Placeholder="Description"
+                                Text="{Binding NewItemDescription}"
+                                AutoSize="TextChanges" />
+
+                        <Entry Placeholder="Location"
+                               Text="{Binding NewItemLocation}" />
+
+                        <Entry Placeholder="Daily Rate (£)"
+                               Keyboard="Numeric"
+                               Text="{Binding NewItemRate}" />
+
+                        <Picker Title="Category"
+                                ItemsSource="{Binding Categories}"
+                                SelectedItem="{Binding SelectedCategory}" />
+
+                        <HorizontalStackLayout Spacing="10">
+                            <Button Text="Save"
+                                    Command="{Binding SaveItemCommand}"
+                                    BackgroundColor="{StaticResource Primary}"
+                                    TextColor="White" />
+
+                            <Button Text="Cancel"
+                                    Command="{Binding CancelAddItemCommand}"
+                                    BackgroundColor="Gray"
+                                    TextColor="White" />
+                        </HorizontalStackLayout>
+
+                    </StackLayout>
+                </Border>
+
+                <!-- Items List -->
+                <CollectionView Grid.Row="4"
+                                ItemsSource="{Binding Items}"
+                                SelectionMode="None">
+
+                    <CollectionView.EmptyView>
+                        <Label Text="No items yet. Add your first listing!"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               Opacity="0.6" />
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,5"
+                                    Padding="15"
+                                    Stroke="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray700}}"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}">
+                
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+
+                                <Grid ColumnDefinitions="*,Auto">
+
+                                    <StackLayout>
+                                        <Label Text="{Binding Name}" FontSize="16" FontAttributes="Bold" />
+                                        <Label Text="{Binding Description}" FontSize="13" LineBreakMode="TailTruncation" MaxLines="2" Opacity="0.7" />
+                                        <Label Text="{Binding Category}" FontSize="12" Opacity="0.6" />
+                                        <Label Text="{Binding DailyRate, StringFormat='£{0}/day'}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               TextColor="{StaticResource Primary}" />
+                                    </StackLayout>
+                                </Grid>
+
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                        Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ViewItemCommand}"
+                                        CommandParameter="{Binding .}" />
+                                </Border.GestureRecognizers>
+
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+            </Grid>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
