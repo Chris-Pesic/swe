@@ -138,7 +138,6 @@ public partial class MainViewModel : BaseViewModel
                 Location = NewItemLocation,
                 Category = Enum.Parse<ItemCategory>(SelectedCategory),
                 DailyRate = dailyRate,
-                Rating = (Rating)ratingValue,
                 OwnerId = CurrentUser!.Id
             };
 

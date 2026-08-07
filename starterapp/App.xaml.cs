@@ -5,10 +5,12 @@ namespace StarterApp;
 public partial class App : Application
 {
 	private readonly IServiceProvider _serviceProvider;
+
+
 	public App(IServiceProvider serviceProvider)
 	{
-		_serviceProvider = serviceProvider;
-		InitializeComponent();
+        _serviceProvider = serviceProvider;
+        InitializeComponent();
 
 		Routing.RegisterRoute(nameof(Views.MainPage), typeof(Views.MainPage));
 		Routing.RegisterRoute(nameof(Views.LoginPage), typeof(Views.LoginPage));

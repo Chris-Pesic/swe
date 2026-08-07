@@ -17,21 +17,10 @@ public enum ItemCategory
 
 public enum ItemStatus
 {
-    Requested,
-    Rejected,
-    Approved,
-    OutForRent,
-    Returned,
-    Collected
-}
-
-public enum Rating
-{
-    OneStar = 1,
-    TwoStars = 2,
-    ThreeStars = 3,
-    FourStars = 4,
-    FiveStars = 5
+    Available,
+    Reserved,
+    Rented,
+    Unavailable
 }
 
 [Table("items")]
@@ -46,7 +35,7 @@ public class Item
     [Required]
     public string Description { get; set; } = string.Empty;
 
-    public Rating? Rating { get; set; }
+    public ICollection<Review> Reviews { get; set; } = new List<Review>();
 
     [Required]
     [Column(TypeName = "decimal(10,2)")]
@@ -58,7 +47,7 @@ public class Item
     [Required]
     public string Location { get; set; } = string.Empty;
 
-    public ItemStatus? Status { get; set; }
+    public ItemStatus Status { get; set; } = ItemStatus.Available;
 
     public int OwnerId { get; set; }
 
